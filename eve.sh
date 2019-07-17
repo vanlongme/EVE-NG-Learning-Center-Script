@@ -24,26 +24,41 @@ else
 	echo 'Mat khau duoc dat de tao cho users la:' $passwd
 	echo 'Nhap duong dan chua path LAB cho hoc vien, vi du: /ISE/'
 	read lab
-        echo "Nhap files Lab mau da tao, de cung voi noi dat script"
-        read filename
-	mkdir /opt/unetlab/labs/$lab
+	mkdir /opt/unetlab/labs$lab
+	read -r -p "Ban co muon tao lab trong cho User ? [Y/N] " input
+	case $input in
+    			[yY])
+ 			echo 'OK !'
+				;;
+    			[nN])
+ 		echo "No"
+       			;;
+    			*)
+		echo "Invalid input..."
+ 		exit 1
+ 				;;
+	esac
+
 
 fi
 dot="'"
 unl=".unl"
 loop=$count
+uid=`uuidgen -r`
 while [ $loop != $avai ]
 do
 	echo 'Dang tao user:' $username$loop
 	echo "INSERT INTO users VALUES ($dot$username$loop$dot,NULL,'admin@itforvn.com',-1,'Eve-NG Administrator',$dot$passwd$dot,NULL,'',$dot$username$loop$dot,$dot$lab$dot,1);" | mysql --host=localhost --user=root --password=eve-ng eve_ng_db
 	echo "Dang tao LAB cho User...."
-	cp $filename /opt/unetlab/labs/$lab/$username$loop$unl
+	case $input in
+    			[yY])
+		echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lab name="'$username$loop'" id="'$uid'" version="1" scripttimeout="300" lock="0" author="'$username$loop'"/>' >> /opt/unetlab/labs/$lab$username$loop$unl
+	esac
 	echo "Tao Lab Thanh Cong !"
 	loop=`expr $loop - 1`
 done
 sleep 3
-echo "Dang nhap vao cac User da tao va bam y de gan lab cho User"
-read conf
 while [ $count != $avai ]
 do
 	RANDOM=$$
@@ -52,4 +67,7 @@ do
         echo "update pods set lab_id=$dot$lab$username$count$unl$dot where username=$dot$username$count$dot;" | mysql --host=localhost --user=root --password=eve-ng eve_ng_db
 	count=`expr $count - 1`
 done
+echo 'Dang fix phan quyen'
+`/opt/unetlab/wrappers/unl_wrapper -a fixpermissions`
+echo 'Fix phan quyen hoan thanh'
 echo "SUCCESS !"
