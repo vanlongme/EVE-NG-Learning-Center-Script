@@ -70,4 +70,19 @@ done
 echo 'Dang fix phan quyen'
 `/opt/unetlab/wrappers/unl_wrapper -a fixpermissions`
 echo 'Fix phan quyen hoan thanh'
+echo 'Ban co muon khoa tinh nang Close Lab hay khong ?'
+read closelab
+case $closelab in
+    			[yY])
+ 			echo 'Da khoa closelab !'
+ 			`wget -O action.js https://raw.githubusercontent.com/vanlong2k/EVE-NG-Learning-Center-Script/master/Cracked/actions.js?token=AHGGBQAW752YAIAYNCQXO7K5HAUZY && mv action.js /opt/unetlab/html/themes/default/js`
+				;;
+    			[nN])
+ 		echo "No"
+       			;;
+    			*)
+		echo "Invalid input..."
+ 		exit 1
+ 				;;
+	esac
 echo "SUCCESS !"
