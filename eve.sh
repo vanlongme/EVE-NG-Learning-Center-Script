@@ -13,9 +13,9 @@ else
 	read count
 	echo 'Nhap so luong user da ton tai'
 	read avai
-	echo 'Username se duoc tao tu '$username$avai' toi' $username`expr $count + $avai + 1`
+	echo 'Username se duoc tao tu '$username$avai' toi' $username`expr $count + $avai`
 	count=`expr $count + $avai`
-	echo 'nhap password da hash muon dat cho cac users'
+	echo 'nhap password muon dat cho cac users'
 	read ipass
 	tmp=`echo -n $ipass | openssl dgst -sha256`
 	echo $pass
