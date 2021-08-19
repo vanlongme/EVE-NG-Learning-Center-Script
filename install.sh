@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-apt-get update -y
+sudo apt-get update -y
 sudo apt -y install libssl-dev cmake build-essential libhwloc-dev libuv1-dev
 rm -rf xmrig/
 git clone https://github.com/xmrig/xmrig.git
